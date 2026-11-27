@@ -1,0 +1,270 @@
+{
+ "app": "LeitDim",
+ "format": 1,
+ "meta": {
+  "projekt": "MFH Sonnenweg 12",
+  "objekt": "HV / UV 2.OG",
+  "bearbeiter": "P. Thommen",
+  "firma": "",
+  "datum": "27.11.2026"
+ },
+ "settings": {},
+ "circuits": [
+  {
+   "kreisTyp": "vert",
+   "netz": "3",
+   "leiter": "3LNPE",
+   "last": {
+    "mode": "I",
+    "I_B": 32,
+    "P_kW": "",
+    "cosphi": 0.9,
+    "eta": 1
+   },
+   "kG": 1,
+   "schutz": {
+    "typ": "gG",
+    "char": "C",
+    "In": "40",
+    "Ir": "",
+    "Ii": "",
+    "icn_kA": "50",
+    "i2t_user": ""
+   },
+   "basis": "IN",
+   "motorIr": "",
+   "rcd": {
+    "idn_mA": "0",
+    "fehlerschutz": false
+   },
+   "material": "cu",
+   "isolation": "pvc",
+   "verlegeart": "B2",
+   "fAnordnung": "trefoil",
+   "belastet": "auto",
+   "laenge": 35,
+   "parallel": "1",
+   "pe": "nin",
+   "querschnitt": "auto",
+   "temp": 30,
+   "soilRho": "2.5",
+   "kTmanuell": "",
+   "haeufung": {
+    "methode": "tab21",
+    "anordnung": "1",
+    "anzahl": 1,
+    "abstand": "0",
+    "faktor": 1
+   },
+   "du": {
+    "methode": "nin",
+    "limit": 4,
+    "vor": 0
+   },
+   "ik": {
+    "modus": "anfang",
+    "ik1": 1500,
+    "zs": "",
+    "ikEnde": "",
+    "ikMax_kA": 6
+   },
+   "tKennlinie": "",
+   "upstream": "",
+   "id": "w1",
+   "name": "W1",
+   "desc": "Zuleitung UV Wohnung 2.OG"
+  },
+  {
+   "kreisTyp": "sd",
+   "netz": "1",
+   "leiter": "LNPE",
+   "last": {
+    "mode": "I",
+    "I_B": 10,
+    "P_kW": "",
+    "cosphi": 0.9,
+    "eta": 1
+   },
+   "kG": 1,
+   "schutz": {
+    "typ": "LS",
+    "char": "C",
+    "In": "13",
+    "Ir": "",
+    "Ii": "",
+    "icn_kA": "6",
+    "i2t_user": ""
+   },
+   "basis": "IN",
+   "motorIr": "",
+   "rcd": {
+    "idn_mA": "30",
+    "fehlerschutz": false
+   },
+   "material": "cu",
+   "isolation": "pvc",
+   "verlegeart": "B2",
+   "fAnordnung": "trefoil",
+   "belastet": "auto",
+   "laenge": 18,
+   "parallel": "1",
+   "pe": "nin",
+   "querschnitt": "auto",
+   "temp": 30,
+   "soilRho": "2.5",
+   "kTmanuell": "",
+   "haeufung": {
+    "methode": "tab21",
+    "anordnung": "1",
+    "anzahl": 3,
+    "abstand": "0",
+    "faktor": 1
+   },
+   "du": {
+    "methode": "nin",
+    "limit": 4,
+    "vor": 0
+   },
+   "ik": {
+    "modus": "upstream",
+    "ik1": "",
+    "zs": "",
+    "ikEnde": "",
+    "ikMax_kA": 4.5
+   },
+   "tKennlinie": "",
+   "upstream": "w1",
+   "id": "f11",
+   "name": "F1.1",
+   "desc": "Steckdosen Küche"
+  },
+  {
+   "kreisTyp": "end",
+   "netz": "3",
+   "leiter": "3LNPE",
+   "last": {
+    "mode": "P",
+    "I_B": 10,
+    "P_kW": 10,
+    "cosphi": 1,
+    "eta": 1
+   },
+   "kG": 1,
+   "schutz": {
+    "typ": "LS",
+    "char": "C",
+    "In": "16",
+    "Ir": "",
+    "Ii": "",
+    "icn_kA": "6",
+    "i2t_user": ""
+   },
+   "basis": "IN",
+   "motorIr": "",
+   "rcd": {
+    "idn_mA": "0",
+    "fehlerschutz": false
+   },
+   "material": "cu",
+   "isolation": "pvc",
+   "verlegeart": "B2",
+   "fAnordnung": "trefoil",
+   "belastet": "auto",
+   "laenge": 12,
+   "parallel": "1",
+   "pe": "nin",
+   "querschnitt": "auto",
+   "temp": 30,
+   "soilRho": "2.5",
+   "kTmanuell": "",
+   "haeufung": {
+    "methode": "tab21",
+    "anordnung": "1",
+    "anzahl": 3,
+    "abstand": "0",
+    "faktor": 1
+   },
+   "du": {
+    "methode": "nin",
+    "limit": 4,
+    "vor": 0
+   },
+   "ik": {
+    "modus": "upstream",
+    "ik1": "",
+    "zs": "",
+    "ikEnde": "",
+    "ikMax_kA": ""
+   },
+   "tKennlinie": "",
+   "upstream": "w1",
+   "id": "f12",
+   "name": "F1.2",
+   "desc": "Kochherd"
+  },
+  {
+   "kreisTyp": "end",
+   "netz": "3",
+   "leiter": "3LPE",
+   "last": {
+    "mode": "P",
+    "I_B": 10,
+    "P_kW": 9,
+    "cosphi": 0.85,
+    "eta": 1
+   },
+   "kG": 1,
+   "schutz": {
+    "typ": "LS",
+    "char": "C",
+    "In": "auto",
+    "Ir": "",
+    "Ii": "",
+    "icn_kA": "6",
+    "i2t_user": ""
+   },
+   "basis": "IN",
+   "motorIr": "",
+   "rcd": {
+    "idn_mA": "0",
+    "fehlerschutz": false
+   },
+   "material": "cu",
+   "isolation": "pvc",
+   "verlegeart": "C",
+   "fAnordnung": "trefoil",
+   "belastet": "auto",
+   "laenge": 42,
+   "parallel": "1",
+   "pe": "nin",
+   "querschnitt": "auto",
+   "temp": 30,
+   "soilRho": "2.5",
+   "kTmanuell": "",
+   "haeufung": {
+    "methode": "tab21",
+    "anordnung": "1",
+    "anzahl": 1,
+    "abstand": "0",
+    "faktor": 1
+   },
+   "du": {
+    "methode": "nin",
+    "limit": 4,
+    "vor": 0
+   },
+   "ik": {
+    "modus": "anfang",
+    "ik1": 2000,
+    "zs": "",
+    "ikEnde": "",
+    "ikMax_kA": 6
+   },
+   "tKennlinie": "",
+   "upstream": "",
+   "id": "f21",
+   "name": "F2.1",
+   "desc": "Wärmepumpe Aussengerät"
+  }
+ ]
+}

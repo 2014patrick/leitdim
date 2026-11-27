@@ -1,0 +1,166 @@
+name: Build & Test (Windows-VMs)
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+    paths-ignore: ['lizenzen/gesperrt.json', '**.md']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Windows ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            os: windows-latest
+            unpacked: win-unpacked
+          - arch: arm64
+            os: windows-11-arm
+            unpacked: win-arm64-unpacked
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Version aus Tag übernehmen
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          $v = '${{ github.ref_name }}'.TrimStart('v')
+          foreach ($d in 'app', 'admin') { Push-Location $d; npm version $v --no-git-tag-version --allow-same-version; Pop-Location }
+
+      - name: Abhängigkeiten installieren
+        shell: pwsh
+        run: |
+          Push-Location app; npm ci --no-audit --no-fund; Pop-Location
+          Push-Location admin; npm ci --no-audit --no-fund; Pop-Location
+
+      - name: LeitDim bauen
+        working-directory: app
+        run: npx electron-builder --win dir portable --${{ matrix.arch }} --publish never
+
+      - name: Lizenzverwaltung bauen
+        working-directory: admin
+        run: npx electron-builder --win portable --${{ matrix.arch }} --publish never
+
+      - name: Pakete zusammenstellen
+        shell: pwsh
+        run: |
+          $v = (Get-Content app/package.json | ConvertFrom-Json).version
+          $a = '${{ matrix.arch }}'
+          New-Item -ItemType Directory -Force out/pkg/LeitDim, out/release, out/smoke | Out-Null
+          Copy-Item "app/dist/${{ matrix.unpacked }}/*" out/pkg/LeitDim -Recurse
+          Copy-Item "beispiel/*" out/pkg/LeitDim
+          Compress-Archive -Path out/pkg/LeitDim -DestinationPath "out/release/LeitDim-$v-$a-Ordner.zip" -CompressionLevel Optimal
+          Copy-Item "app/dist/LeitDim-$v-portable-$a.exe" out/release/
+          Copy-Item "admin/dist/LeitDim-Lizenzen-$v-portable-$a.exe" out/release/
+          Get-ChildItem out/release | Format-Table Name, Length -AutoSize
+          "VERSION=$v" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Test in der VM – Ordner-Version
+        shell: pwsh
+        run: |
+          $out = Join-Path $PWD 'out/smoke/ordner'
+          New-Item -ItemType Directory -Force $out | Out-Null
+          $exe = Join-Path $PWD 'out/pkg/LeitDim/LeitDim.exe'
+          $sample = (Get-ChildItem (Join-Path $PWD 'out/pkg/LeitDim/*.leitdim') | Select-Object -First 1).FullName
+          $sw = [Diagnostics.Stopwatch]::StartNew()
+          $p = Start-Process -FilePath $exe -ArgumentList @("--smoke-test=`"$out`"", "`"$sample`"") -PassThru
+          if (-not $p.WaitForExit(150000)) { Stop-Process -Id $p.Id -Force; throw 'Zeitüberschreitung: LeitDim hat sich nicht beendet' }
+          "Laufzeit: $($sw.Elapsed.TotalSeconds) s, Exitcode $($p.ExitCode)"
+          Copy-Item "$env:APPDATA/LeitDim/leitdim.log" $out -ErrorAction SilentlyContinue
+          if (-not (Test-Path "$out/smoke.json")) { throw 'smoke.json fehlt – App ist nicht sauber gestartet' }
+          Get-Content "$out/smoke.json"
+          if (-not (Get-Content "$out/smoke.json" | ConvertFrom-Json).ok) { throw 'Smoke-Test meldet Fehler' }
+
+      - name: Test in der VM – Portable-Version
+        shell: pwsh
+        run: |
+          $out = Join-Path $PWD 'out/smoke/portable'
+          New-Item -ItemType Directory -Force $out | Out-Null
+          $exe = Join-Path $PWD "out/release/LeitDim-$env:VERSION-portable-${{ matrix.arch }}.exe"
+          $sample = (Get-ChildItem (Join-Path $PWD 'beispiel/*.leitdim') | Select-Object -First 1).FullName
+          $sw = [Diagnostics.Stopwatch]::StartNew()
+          $p = Start-Process -FilePath $exe -ArgumentList @("--smoke-test=`"$out`"", "`"$sample`"") -PassThru
+          if (-not $p.WaitForExit(300000)) { Stop-Process -Id $p.Id -Force; throw 'Zeitüberschreitung: Portable-Version hat sich nicht beendet' }
+          "Laufzeit inkl. Entpacken: $($sw.Elapsed.TotalSeconds) s"
+          Start-Sleep -Seconds 3
+          if (-not (Test-Path "$out/smoke.json")) { throw 'smoke.json fehlt – Portable-Version ist nicht sauber gestartet' }
+          Get-Content "$out/smoke.json"
+          if (-not (Get-Content "$out/smoke.json" | ConvertFrom-Json).ok) { throw 'Smoke-Test (portable) meldet Fehler' }
+
+      - name: Test in der VM – Lizenzverwaltung
+        shell: pwsh
+        run: |
+          $out = Join-Path $PWD 'out/smoke/lizenzen'
+          New-Item -ItemType Directory -Force $out | Out-Null
+          $exe = Join-Path $PWD "out/release/LeitDim-Lizenzen-$env:VERSION-portable-${{ matrix.arch }}.exe"
+          $p = Start-Process -FilePath $exe -ArgumentList @("--smoke-test=`"$out`"") -PassThru
+          if (-not $p.WaitForExit(300000)) { Stop-Process -Id $p.Id -Force; throw 'Zeitüberschreitung: Lizenzverwaltung' }
+          Start-Sleep -Seconds 3
+          if (-not (Test-Path "$out/lizenzen-smoke.json")) { throw 'Lizenzverwaltung ist nicht sauber gestartet' }
+          Get-Content "$out/lizenzen-smoke.json"
+
+      - name: Test-Ergebnisse hochladen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-${{ matrix.arch }}
+          path: out/smoke
+          retention-days: 14
+
+      - name: Release-Dateien hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.arch }}
+          path: out/release
+          retention-days: 7
+          compression-level: 0
+
+  release:
+    name: Release veröffentlichen
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          path: rel
+          merge-multiple: true
+      - name: Release erstellen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          V="${GITHUB_REF_NAME#v}"
+          cat > notes.md <<NOTES
+          ## LeitDim $V
+
+          **Welche Datei?**
+
+          | Datei | Für |
+          |---|---|
+          | \`LeitDim-$V-arm64-Ordner.zip\` | Windows auf ARM (z. B. Snapdragon) – **schnellster Start**, einmal entpacken |
+          | \`LeitDim-$V-x64-Ordner.zip\` | Normale Windows-PCs (Intel/AMD) – **schnellster Start**, einmal entpacken |
+          | \`LeitDim-$V-portable-arm64.exe\` / \`-x64.exe\` | Einzelne Datei, startet ohne Entpacken (etwas langsamer) |
+          | \`LeitDim-Lizenzen-$V-portable-*.exe\` | Lizenzverwaltung (nur für den Herausgeber) |
+
+          Installierte Versionen aktualisieren sich automatisch: Das Update wird im Hintergrund geladen und beim Schliessen installiert.
+
+          Alle Dateien wurden in Windows-VMs (x64 und ARM64) gebaut und automatisch getestet.
+          NOTES
+          gh release create "$GITHUB_REF_NAME" rel/* --repo "$GITHUB_REPOSITORY" --title "LeitDim $V" --notes-file notes.md

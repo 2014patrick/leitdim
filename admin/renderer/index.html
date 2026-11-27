@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+<title>LeitDim Lizenzen</title>
+<link rel="stylesheet" href="base.css" />
+<link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg"><defs>
+  <symbol id="i-add" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l2 2M14 9l2 2"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15c-1 1-1.5 3.5-1.5 4.5 1 0 3.5-.5 4.5-1.5M9 15l-3-3 3.5-5.5C12 3 16 3 20 4c1 4 1 8-2.5 10.5L12 18z"/><circle cx="15" cy="9" r="1.6"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6.5"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linejoin="round"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="M4 7l8 6 8-6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 7.7-1.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.3v.1"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+</defs></svg>
+
+<div id="app" class="adm">
+  <header class="toolbar">
+    <div class="brand"><svg class="bmark" id="brandMark" viewBox="0 0 256 256" aria-hidden="true"></svg><div><svg class="bwm" id="brandWm"></svg><small>Lizenzverwaltung</small></div></div>
+    <nav class="views">
+      <button class="vbtn active" data-view="licenses"><svg><use href="#i-list"/></svg>Lizenzen</button>
+      <button class="vbtn" data-view="ban"><svg><use href="#i-shield"/></svg>Sperrliste</button>
+      <button class="vbtn" data-view="releases"><svg><use href="#i-rocket"/></svg>Versionen</button>
+      <button class="vbtn" data-view="setup"><svg><use href="#i-gear"/></svg>Einrichtung</button>
+    </nav>
+    <div class="spacer"></div>
+    <button class="btn pri big" data-cmd="new"><svg><use href="#i-add"/></svg>Neue Lizenz</button>
+  </header>
+
+  <main id="main"></main>
+
+  <footer class="statusbar">
+    <span id="sbKey"></span><span id="sbGit"></span><span class="sp"></span><span id="sbUpd"></span><span>LeitDim Lizenzen <span id="sbVer"></span></span>
+  </footer>
+</div>
+
+<div class="modal-bg" id="modalBg"><div class="modal" role="dialog" aria-modal="true">
+  <header><h3 id="modalTitle"></h3><button class="icon-btn" data-close title="Schliessen"><svg><use href="#i-x" stroke="#424242" stroke-width="2"/></svg></button></header>
+  <div class="body" id="modalBody"></div><footer id="modalFoot"></footer>
+</div></div>
+<div class="toast" id="toast"></div>
+<div class="loader" id="loader"><div class="lcard"><svg class="lmark" id="loaderMark" viewBox="0 0 256 256"></svg><div class="ltxt" id="loaderTxt">Bitte warten …</div><div class="lbar"><span></span></div></div></div>
+
+<script src="brand.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

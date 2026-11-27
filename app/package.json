@@ -1,0 +1,19 @@
+{
+  "name": "leitdim",
+  "productName": "LeitDim",
+  "version": "1.2.0",
+  "description": "Leitungsdimensionierung nach NIN 2025 – Strombelastbarkeit, Spannungsfall, Überlast-, Kurzschluss- und Fehlerschutz",
+  "main": "main.js",
+  "author": "Patrick Thommen",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win dir portable"
+  },
+  "devDependencies": {
+    "electron": "^45.5.0",
+    "electron-builder": "^26.18.0",
+    "resedit": "^3.1.1"
+  }
+}

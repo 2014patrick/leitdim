@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+<title>LeitDim – Leitungsdimensionierung</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="i-new" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5M12 12v6M9 15h6"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2h7A1.5 1.5 0 0 1 19 9.5V11"/><path d="M3 7.5v10A1.5 1.5 0 0 0 4.5 19h13.2a1.5 1.5 0 0 0 1.4-1l2.3-6a1 1 0 0 0-.9-1.4H7.6a1.5 1.5 0 0 0-1.4 1L3.6 18"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-15A.5.5 0 0 1 5 4z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></symbol>
+    <symbol id="i-add" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></symbol>
+    <symbol id="i-del" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12.5A1.5 1.5 0 0 0 8.5 21h7a1.5 1.5 0 0 0 1.5-1.5L18 7M9 7V4.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5V7"/></symbol>
+    <symbol id="i-pdf" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5M8.5 13h7M8.5 16.5h5"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M3.5 14.5h17M9.5 9.5v10"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/><circle cx="12" cy="12" r="6.5"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.8M12 17.2v.1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></symbol>
+    <symbol id="i-dash" viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M7 12h10"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.3v.1"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l2 2M14 9l2 2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.1"/></symbol>
+  </defs>
+</svg>
+
+<div id="app">
+  <header class="toolbar">
+    <div class="brand" data-cmd="about" title="Über LeitDim"><svg class="bmark" id="brandMark" viewBox="0 0 256 256" aria-hidden="true"></svg><div><svg class="bwm" id="brandWm" aria-label="LeitDim"></svg><small>Leitungsdimensionierung</small></div></div>
+    <div class="tgroup">
+      <button class="tbtn" data-cmd="new" title="Neues Projekt (Ctrl+N)"><svg><use href="#i-new"/></svg>Neu</button>
+      <button class="tbtn" data-cmd="open" title="Projekt öffnen (Ctrl+O)"><svg><use href="#i-open"/></svg>Öffnen</button>
+      <button class="tbtn" data-cmd="save" title="Speichern (Ctrl+S)"><svg><use href="#i-save"/></svg>Speichern</button>
+    </div>
+    <div class="tgroup">
+      <button class="tbtn primary" data-cmd="addCircuit" title="Neuer Stromkreis (Ctrl+T)"><svg><use href="#i-add"/></svg>Stromkreis</button>
+      <button class="tbtn" data-cmd="dupCircuit" title="Stromkreis duplizieren (Ctrl+D)"><svg><use href="#i-copy"/></svg>Duplizieren</button>
+      <button class="tbtn" data-cmd="delCircuit" title="Stromkreis löschen"><svg><use href="#i-del"/></svg>Löschen</button>
+    </div>
+    <div class="tgroup">
+      <button class="tbtn" data-cmd="report" title="Bericht als PDF (Ctrl+P)"><svg><use href="#i-pdf"/></svg>Bericht PDF</button>
+      <button class="tbtn" data-cmd="csv" title="Kabelliste als CSV (Excel)"><svg><use href="#i-table"/></svg>Kabelliste</button>
+    </div>
+    <div class="tgroup">
+      <button class="tbtn" data-cmd="settings" title="Rechenparameter"><svg><use href="#i-gear"/></svg>Einstellungen</button>
+      <button class="tbtn" data-cmd="help" title="Rechengrundlagen (F1)"><svg><use href="#i-help"/></svg>Grundlagen</button>
+      <button class="tbtn" data-cmd="license" title="Lizenz eintragen / anzeigen"><svg><use href="#i-key"/></svg>Lizenz</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="tb-right" id="tbRight"><span class="dirty-dot" title="Ungespeicherte Änderungen"></span><span id="fileName">Neues Projekt</span></div>
+  </header>
+
+  <div class="main">
+    <aside class="sidebar">
+      <section class="proj">
+        <h3>Projekt</h3>
+        <div class="pf">
+          <label for="m-projekt">Projekt</label><input id="m-projekt" data-meta="projekt" placeholder="z. B. MFH Sonnenweg" />
+          <label for="m-objekt">Objekt</label><input id="m-objekt" data-meta="objekt" placeholder="Adresse / Verteiler" />
+          <label for="m-bearb">Bearbeiter</label><input id="m-bearb" data-meta="bearbeiter" placeholder="Name" />
+          <label for="m-firma">Firma</label><input id="m-firma" data-meta="firma" placeholder="optional" />
+        </div>
+      </section>
+      <div class="list-head"><h3>Stromkreise <span id="cCount"></span></h3><button class="icon-btn" data-cmd="addCircuit" title="Neuer Stromkreis"><svg><use href="#i-add"/></svg></button></div>
+      <input class="search" id="search" placeholder="Suchen…" />
+      <ul id="circuitList"></ul>
+    </aside>
+
+    <section class="center">
+      <nav class="tabs">
+        <button class="tab active" data-tab="input">Eingaben</button>
+        <button class="tab" data-tab="compare">Querschnittsvergleich</button>
+        <button class="tab" data-tab="du">Spannungsfall</button>
+        <button class="tab" data-tab="calc">Rechenweg</button>
+        <button class="tab" data-tab="list">Kabelliste</button>
+      </nav>
+
+      <div class="pane active" id="pane-input">
+        <div class="pickbar" id="pickbar"></div>
+        <div class="cards">
+          <div class="card">
+            <h4><span class="no">1</span>Stromkreis</h4>
+            <div class="fgrid">
+              <label>Bezeichnung</label><div class="field"><input data-path="name" placeholder="z. B. F1.3" /></div>
+              <label>Beschreibung</label><div class="field"><input data-path="desc" placeholder="z. B. Steckdosen Küche" /></div>
+              <label>Art</label><div class="field"><select data-path="kreisTyp">
+                <option value="end">Endstromkreis</option>
+                <option value="sd">Steckdosen-Stromkreis</option>
+                <option value="vert">Verteilstromkreis</option>
+              </select></div>
+              <label>Netz</label><div class="field"><div class="seg" data-path="netz"><button data-v="3">3 × 400 V</button><button data-v="1">1 × 230 V</button></div></div>
+              <label>Leiter</label><div class="field"><select data-path="leiter">
+                <option value="3LNPE">3L + N + PE</option>
+                <option value="3LPE">3L + PE</option>
+                <option value="LNPE">L + N + PE</option>
+              </select></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="no">2</span>Last / Betriebsstrom</h4>
+            <div class="fgrid">
+              <label>Eingabe</label><div class="field"><div class="seg" data-path="last.mode"><button data-v="I">Strom I<sub>B</sub></button><button data-v="P">Leistung P</button></div></div>
+              <label data-show="modeI">Betriebsstrom I<sub>B</sub></label><div class="field" data-show="modeI"><input type="number" step="any" min="0" data-path="last.I_B" placeholder="leer = nur I_N" /><span class="unit">A</span></div>
+              <label data-show="modeP">Leistung P</label><div class="field" data-show="modeP"><input type="number" step="any" min="0" data-path="last.P_kW" /><span class="unit">kW</span></div>
+              <label>cos φ</label><div class="field"><input type="number" step="0.01" min="0.05" max="1" data-path="last.cosphi" /><span class="unit"></span></div>
+              <label data-show="modeP">Wirkungsgrad η</label><div class="field" data-show="modeP"><input type="number" step="0.01" min="0.05" max="1" data-path="last.eta" /><span class="unit"></span></div>
+              <label data-show="modeP">I<sub>B</sub> berechnet</label><div class="field" data-show="modeP"><div class="calc" id="ibCalc">–</div><span class="unit">A</span></div>
+              <label>Gleichzeitigkeit k<sub>G</sub><small>NIN 5.2.3 Tab. 37</small></label><div class="field"><input type="number" step="0.01" min="0.1" max="1" data-path="kG" /><span class="unit"></span></div>
+              <div class="hint">k<sub>G</sub> nur verwenden, wenn die Verbraucher eines Stromkreises nicht gleichzeitig eingeschaltet sind. Bei Tab. 38 (k<sub>GH</sub>) ist die Gleichzeitigkeit bereits enthalten.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="no">3</span>Überstromschutz</h4>
+            <div class="fgrid">
+              <label>Schutzorgan</label><div class="field"><select data-path="schutz.typ">
+                <option value="LS">Leitungsschutzschalter LS</option>
+                <option value="gG">Schmelzsicherung gG</option>
+                <option value="LSV">Leistungs-/Motorschutzsch.</option>
+              </select></div>
+              <label data-show="isLS">Charakteristik</label><div class="field" data-show="isLS"><div class="seg" data-path="schutz.char"><button data-v="B">B</button><button data-v="C">C</button><button data-v="D">D</button></div></div>
+              <label data-show="notLSV">Nennstrom I<sub>N</sub></label><div class="field" data-show="notLSV"><select data-path="schutz.In" id="selIn"></select><span class="unit">A</span></div>
+              <label data-show="isLSV">Einstellwert I<sub>r</sub></label><div class="field" data-show="isLSV"><input type="number" step="any" min="0" data-path="schutz.Ir" /><span class="unit">A</span></div>
+              <label data-show="isLSV">Kurzschlussauslöser I<sub>i</sub></label><div class="field" data-show="isLSV"><input type="number" step="any" min="0" data-path="schutz.Ii" /><span class="unit">A</span></div>
+              <label>Schaltvermögen</label><div class="field"><select data-path="schutz.icn_kA">
+                <option value="">nicht prüfen</option><option value="3">3 kA</option><option value="4.5">4,5 kA</option><option value="6">6 kA</option><option value="10">10 kA</option><option value="15">15 kA</option><option value="25">25 kA</option><option value="36">36 kA</option><option value="50">50 kA</option><option value="100">100 kA</option>
+              </select></div>
+              <label data-show="notGG">I²t Durchlass<small>Herstellerwert, optional</small></label><div class="field" data-show="notGG"><input type="number" step="any" min="0" data-path="schutz.i2t_user" placeholder="Norm-Grenzwert" /><span class="unit">A²s</span></div>
+              <label>Bemessung nach</label><div class="field"><select data-path="basis">
+                <option value="IN">IN Überstromunterbrecher</option>
+                <option value="IB">IB Verbraucher (eig. Überlastschutz)</option>
+              </select></div>
+              <label data-show="basisIB">Motorschutz I<sub>r</sub><small>Überlastschutz, optional</small></label><div class="field" data-show="basisIB"><input type="number" step="any" min="0" data-path="motorIr" /><span class="unit">A</span></div>
+              <label>Fehlerstrom-Schutz</label><div class="field"><select data-path="rcd.idn_mA">
+                <option value="0">kein RCD</option><option value="10">RCD 10 mA</option><option value="30">RCD 30 mA</option><option value="100">RCD 100 mA</option><option value="300">RCD 300 mA</option><option value="500">RCD 500 mA</option>
+              </select></div>
+              <label data-show="hasRCD"></label><div class="field" data-show="hasRCD"><label class="chk"><input type="checkbox" data-path="rcd.fehlerschutz" /> Fehlerschutz durch RCD (statt Üu)</label></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="no">4</span>Leitung &amp; Verlegung</h4>
+            <div class="fgrid">
+              <label>Leitermaterial</label><div class="field"><div class="seg" data-path="material"><button data-v="cu">Kupfer</button><button data-v="al">Aluminium</button></div></div>
+              <label>Isolation</label><div class="field"><div class="seg" data-path="isolation"><button data-v="pvc">PVC 70 °C</button><button data-v="xlpe">VPE/EPR 90 °C</button></div></div>
+              <label>Verlegeart<small>NIN 5.2.3 Tab. 2/3</small></label><div class="field"><select data-path="verlegeart" id="selMethod"></select></div>
+              <label data-show="isF3">Anordnung</label><div class="field" data-show="isF3"><div class="seg" data-path="fAnordnung"><button data-v="trefoil">im Dreieck</button><button data-v="flat">flach berührend</button></div></div>
+              <label>Belastete Leiter</label><div class="field"><select data-path="belastet">
+                <option value="auto">automatisch</option><option value="2">2 (zweiadrig)</option><option value="3">3 (dreiadrig)</option>
+              </select></div>
+              <label>Leitungslänge</label><div class="field"><input type="number" step="any" min="0" data-path="laenge" /><span class="unit">m</span></div>
+              <label>Parallele Leiter / Pol</label><div class="field"><select data-path="parallel"><option value="1">1 (keine)</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+              <label>PE-Querschnitt</label><div class="field"><select data-path="pe" id="selPE"></select></div>
+              <label>Querschnitt</label><div class="field"><select data-path="querschnitt" id="selS"></select></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="no">5</span>Umgebung &amp; Häufung</h4>
+            <div class="fgrid">
+              <label id="lblTemp">Umgebungstemperatur<small>Tab. 18</small></label><div class="field"><input type="number" step="1" data-path="temp" /><span class="unit">°C</span></div>
+              <label data-show="isD">Wärmewiderstand Boden</label><div class="field" data-show="isD"><select data-path="soilRho"><option value="0.5">0,5 K·m/W</option><option value="0.7">0,7 K·m/W</option><option value="1">1,0 K·m/W</option><option value="1.5">1,5 K·m/W</option><option value="2">2,0 K·m/W</option><option value="2.5">2,5 K·m/W (Referenz)</option><option value="3">3,0 K·m/W</option></select></div>
+              <label>Häufung</label><div class="field"><select data-path="haeufung.methode" id="selHM">
+                <option value="tab21">Tab. 21 – kH (gleichzeitig)</option>
+                <option value="tab38">Tab. 38 – kGH (nicht gleichz.)</option>
+                <option value="ducts">Erdreich, Rohre mit Abstand</option>
+                <option value="manuell">Faktor manuell</option>
+              </select></div>
+              <label data-show="hmTab">Anordnung</label><div class="field" data-show="hmTab"><select data-path="haeufung.anordnung" id="selArr"></select></div>
+              <label data-show="hmCount">Anzahl Stromkreise<small>inkl. diesem</small></label><div class="field" data-show="hmCount"><input type="number" step="1" min="1" data-path="haeufung.anzahl" /><span class="unit"></span></div>
+              <label data-show="hmDucts">Abstand der Rohre</label><div class="field" data-show="hmDucts"><select data-path="haeufung.abstand"><option value="0">berührend</option><option value="0.25">0,25 m</option><option value="0.5">0,5 m</option><option value="1">1,0 m</option></select></div>
+              <label data-show="hmMan">Faktor</label><div class="field" data-show="hmMan"><input type="number" step="0.01" min="0.1" max="1.5" data-path="haeufung.faktor" /><span class="unit"></span></div>
+              <label>k<sub>ϑ</sub> manuell<small>optional</small></label><div class="field"><input type="number" step="0.01" min="0.1" max="1.5" data-path="kTmanuell" placeholder="aus Tabelle" /><span class="unit"></span></div>
+              <div class="hint" id="factorHint">–</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="no">6</span>Spannungsfall</h4>
+            <div class="fgrid">
+              <label>Methode</label><div class="field"><select data-path="du.methode">
+                <option value="nin">NIN-Nomogramm (R bei 70 °C)</option>
+                <option value="exakt">genau (R·cos φ + X·sin φ)</option>
+              </select></div>
+              <label>Zulässig</label><div class="field"><input type="number" step="0.1" min="0.1" data-path="du.limit" /><span class="unit">%</span></div>
+              <label>Vorgeschaltete Leitung<small>Δu wird aufaddiert</small></label><div class="field"><select data-path="upstream" id="selUp"></select></div>
+              <label>Vorbelastung<small>Δu bis Verteiler</small></label><div class="field"><input type="number" step="0.1" min="0" data-path="du.vor" id="inpVor" /><span class="unit">%</span></div>
+              <div class="hint" id="duHint">–</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4><span class="no">7</span>Kurzschluss &amp; Fehlerschutz</h4>
+            <div class="fgrid">
+              <label>Angaben</label><div class="field"><select data-path="ik.modus">
+                <option value="keine">keine (nicht prüfen)</option>
+                <option value="anfang">Ik min am Anfang (L-PE)</option>
+                <option value="zs">Zs am Anfang</option>
+                <option value="ende">Ik am Leitungsende</option>
+                <option value="upstream" id="optUp">Ik ab vorgeschalteter Leitung</option>
+              </select></div>
+              <label data-show="ikAnfang">I<sub>k</sub> min L-PE Anfang</label><div class="field" data-show="ikAnfang"><input type="number" step="any" min="0" data-path="ik.ik1" /><span class="unit">A</span></div>
+              <label data-show="ikZs">Z<sub>s</sub> am Anfang</label><div class="field" data-show="ikZs"><input type="number" step="any" min="0" data-path="ik.zs" /><span class="unit">Ω</span></div>
+              <label data-show="ikEnde">I<sub>k</sub> am Leitungsende</label><div class="field" data-show="ikEnde"><input type="number" step="any" min="0" data-path="ik.ikEnde" /><span class="unit">A</span></div>
+              <label>I<sub>k</sub> max 3-polig<small>am Anfang, optional</small></label><div class="field"><input type="number" step="any" min="0" data-path="ik.ikMax_kA" /><span class="unit">kA</span></div>
+              <label data-show="ikAny">Abschaltzeit Üu<small>aus Kennlinie, optional</small></label><div class="field" data-show="ikAny"><input type="number" step="any" min="0" data-path="tKennlinie" placeholder="automatisch" /><span class="unit">s</span></div>
+              <div class="hint" id="ikHint">–</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pane" id="pane-compare"></div>
+      <div class="pane" id="pane-du"></div>
+      <div class="pane" id="pane-calc"></div>
+      <div class="pane" id="pane-list"></div>
+    </section>
+
+    <aside class="results" id="results"></aside>
+  </div>
+
+  <footer class="statusbar">
+    <span>NIN 2025 · SN 411000:2025 · Kap. 4.1, 4.3, 5.2</span>
+    <span id="sbInfo"></span>
+    <span class="sp"></span>
+    <span id="sbUpd" class="upd"></span>
+    <button id="sbLic" class="lic" data-cmd="license"></button>
+    <span id="sbCalc"></span>
+    <span>LeitDim <span id="sbVer"></span></span>
+  </footer>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal" role="dialog" aria-modal="true">
+    <header><h3 id="modalTitle"></h3><button class="icon-btn" id="modalClose" title="Schliessen"><svg><use href="#i-x" stroke="#424242" stroke-width="2"/></svg></button></header>
+    <div class="body" id="modalBody"></div>
+    <footer id="modalFoot"></footer>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="loader" id="loader" aria-live="polite"><div class="lcard"><svg class="lmark" id="loaderMark" viewBox="0 0 256 256" aria-hidden="true"></svg><div class="ltxt" id="loaderTxt">Bitte warten …</div><div class="lbar"><span></span></div></div></div>
+<div id="print-root"></div>
+<input type="file" id="fileInput" accept=".leitdim,.json" class="hide" />
+
+<script src="brand.js"></script>
+<script src="data.js"></script>
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "leitdim-lizenzen",
+  "productName": "LeitDim Lizenzen",
+  "version": "1.2.0",
+  "description": "LeitDim Lizenzverwaltung – Lizenzen erstellen, sperren, Versionen veröffentlichen",
+  "main": "main.js",
+  "author": "Patrick Thommen",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": { "start": "electron .", "dist": "electron-builder --win portable" },
+  "devDependencies": { "electron": "^45.5.0", "electron-builder": "^26.18.0", "resedit": "^3.1.1" }
+}
