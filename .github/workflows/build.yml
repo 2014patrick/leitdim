@@ -51,11 +51,11 @@ jobs:
 
       - name: LeitDim bauen
         working-directory: app
-        run: npx electron-builder --win dir portable --${{ matrix.arch }} --publish never
+        run: npx --no-install electron-builder --win dir portable --${{ matrix.arch }} --publish never
 
       - name: Lizenzverwaltung bauen
         working-directory: admin
-        run: npx electron-builder --win portable --${{ matrix.arch }} --publish never
+        run: npx --no-install electron-builder --win portable --${{ matrix.arch }} --publish never
 
       - name: Pakete zusammenstellen
         shell: pwsh
