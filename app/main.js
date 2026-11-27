@@ -138,7 +138,7 @@ function closeSplash() {
 /* ---------- Hauptfenster ---------- */
 function createWindow() {
   win = new BrowserWindow({
-    width: 1440, height: 900, minWidth: 1100, minHeight: 640,
+    width: 1440, height: 900, minWidth: 1000, minHeight: 620,
     title: 'LeitDim', icon: path.join(__dirname, 'renderer', 'icon.png'), backgroundColor: '#f3f5f8', show: false,
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true, spellcheck: false },
   });
